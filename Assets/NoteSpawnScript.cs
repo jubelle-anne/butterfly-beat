@@ -12,7 +12,7 @@ public class NoteSpawnScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnNote();
+        // spawnNote();
     }
 
     // Update is called once per frame
