@@ -6,8 +6,7 @@ public class NoteScript : MonoBehaviour
 {
     public float moveSpeed = 5;
     public float offScreen = -40;
-    // Start is called before the first frame update
-    private bool hasPressed = false;
+    private bool canBePressed = false;
     public LogicScript logic;
     void Start()
     {
@@ -17,6 +16,8 @@ public class NoteScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // move notes left
         transform.position = transform.position + (Vector3.left * moveSpeed) * Time.deltaTime;
 
         if (transform.position.x < offScreen)
@@ -24,29 +25,24 @@ public class NoteScript : MonoBehaviour
             Destroy(gameObject);
             Debug.Log("Note deleted.");
         }
+
+        // check if note was hit
+        if (canBePressed && Input.GetKeyDown(KeyCode.K)) 
+        {
+            logic.addScore();
+            canBePressed = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        checkHitNote();
+        canBePressed = true;
     }
-    private void OnTriggerStay2D(Collider2D collision) 
-    {
-        checkHitNote();
-    }
+
 
     private void OnTriggerExit2D(Collider2D collision) 
     {
-        hasPressed = false;
+        canBePressed = false;
     }
 
-    private void checkHitNote()
-    {
-        if (Input.GetKeyDown(KeyCode.K) && !hasPressed)
-        {
-            logic.addScore();
-            hasPressed = true;
-        }
-        // note: later set haspressed to true if its been hit
-    }
 }
